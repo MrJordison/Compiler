@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Automate::Automate(int i, vector<int> *& f, vector < vector<int> * > *& t, vector<char> *& s):initial(i){
+Automate::Automate(int i, vector<int> & f, vector < vector<int> * > & t, vector<char> & s):initial(i){
    finaux = f;
    transitions =t;
    symboles=s;
@@ -14,16 +14,16 @@ bool Automate::isValid(string mot){
 	for(int i(0);i<mot.length();++i){
             //...si elle sont dans la table des symboles de l'automate
             int valid = containsSymbol(mot[i]);
-            if(valid!=-1 && transitions->at(etat)->at(valid)!=-1){
-                etat = transitions->at(etat)->at(valid);
+            if(valid!=-1 && transitions.at(etat)->at(valid)!=-1){
+                etat = transitions.at(etat)->at(valid);
             }
             else{
                 return false;
             }
 	}
 	//si toutes les lettres font parti de l'alphabet, regarde si l'état récupéré est un état final
-	for(int i(0);i<finaux->size();++i){
-		if(etat== finaux->at(i)){
+	for(int i(0);i<finaux.size();++i){
+		if(etat== finaux.at(i)){
 			return true;
 		}
 	}
@@ -31,10 +31,27 @@ bool Automate::isValid(string mot){
 }
 
 int Automate::containsSymbol(char s){
-    for(int i(0);i<symboles->size();++i){
-        if(symboles->at(i)==s){
+    for(int i(0);i<symboles.size();++i){
+        if(symboles.at(i)==s){
             return i;
         }
     }
     return -1;
+}
+
+void Automate::affiche() const{
+    cout<<"états finaux : ";
+    for(int f : finaux)
+        cout<<f<<" ; ";
+    cout<<"\nsymboles : ";
+    for(char s : symboles)
+        cout<<s<<" ; ";
+    cout<<"\ntransitions : "<<endl;
+    for(int i(0);i<transitions.size();++i){
+        cout<<i<<" | ";
+        for(int j : *transitions.at(i))
+            cout<<j<<" | ";
+        cout<<endl;
+    }
+    cout<<endl;
 }
