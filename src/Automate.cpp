@@ -1,4 +1,4 @@
-#include "Automate.hpp"
+#include "include/Automate.hpp"
 
 using namespace std;
 

@@ -11,7 +11,6 @@ class Importer{
         std::string path;
         std::ifstream * file;
 
-        std::vector<std::string> split(std::string, char delimiter);
 
     public:
         //constructor
@@ -27,6 +26,7 @@ class Importer{
 
         //functions
         std::map<std::string,Automate*> import_automate();
+        std::vector<std::string> split(std::string, char delimiter);
 
 
     

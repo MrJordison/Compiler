@@ -1,6 +1,6 @@
 #include <iostream>
 #include <sstream>
-#include "Importer.hpp"
+#include "include/Importer.hpp"
 
 using namespace std;
 
@@ -55,7 +55,6 @@ map<string,Automate*> Importer::import_automate(){
         //Parcours de toutes les lignes du fichiers contenant les automates
         while(getline(*file,contenu)){
             ++cpt;
-            cout<<cpt<<endl;
             switch(cpt){ 
                 //1e ligne : nom de l'unité lexicale reconnue par l'automate
                 case 1:
@@ -115,7 +114,6 @@ map<string,Automate*> Importer::import_automate(){
                         //réinitialisation du compteur et des variables tampons;
                         
                         res.insert(pair<string,Automate *>(name,new Automate(0,f,tr,sym)));
-                        
                         name="";
                         tr.clear();
                         sym.clear();
