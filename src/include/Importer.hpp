@@ -26,7 +26,7 @@ class Importer{
 
         //functions
         std::map<std::string,Automate*> import_automate();
-        std::vector<std::string> split(std::string, char delimiter);
+        static std::vector<std::string> split(std::string, char delimiter);
 
 
     
