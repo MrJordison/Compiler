@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <list>
+#include <vector>
 
 class AnalyseurLexical{
     private:
@@ -13,6 +14,6 @@ class AnalyseurLexical{
 
     public:
         void import_automates(std::string file, Importer * i);
-        std::list<std::pair<std::string, std::string> > analyse_chaine(std::string chaine);
+        std::vector<std::pair<std::string, std::string> > analyse_chaine(std::string chaine);
 
 };

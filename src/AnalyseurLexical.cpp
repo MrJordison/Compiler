@@ -98,9 +98,9 @@ void AnalyseurLexical::import_automates(string path, Importer * i){
 }
 
 
-list<pair<string, string> > AnalyseurLexical::analyse_chaine(string chaine){
+vector<pair<string, string> > AnalyseurLexical::analyse_chaine(string chaine){
     //mapping des mots / unités lexicales retourné par la fonction
-    list<pair<string,string> > tab;
+    vector<pair<string,string> > tab;
 
     //decoupage des mots de la chaine dans un tableau
     vector<string> chaine_split = Importer::split(chaine,' ');
@@ -126,6 +126,6 @@ list<pair<string, string> > AnalyseurLexical::analyse_chaine(string chaine){
             break;
         }
     }
-    //retourne le multimap 
+    //retourne le resultat 
     return tab;
 }

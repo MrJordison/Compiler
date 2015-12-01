@@ -5,24 +5,26 @@
 #include "Regle.hpp"
 
 #include <string>
-#include <list>
+#include <vector>
 #include <map>
 
 class Grammaire{
 
     private:
         Regle * axiome;
-        std::list<std::string> terminaux;
-        std::list<Regle * > regles;
-        std::map<std::string, std::list <int> *> transitions;
+        std::vector<std::string> terminaux;
+        std::vector<Regle * > regles;
+        std::map<Regle *, std::vector <int> *> transitions;
         AnalyseurLexical * al;
 
     public:
         //Constructeur
         Grammaire();
 
-        bool analyse_chaine(std::string chaine);
+        std::vector<std::string> analyse_chaine(std::string chaine);
         void import(std::string path, Importer * i);
+        int get_terminal(std::string terme);
+        int get_nonTerminal(std::string terme);
 
 
 };
