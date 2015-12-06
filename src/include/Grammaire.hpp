@@ -19,9 +19,9 @@ class Grammaire{
 
     public:
         //Constructeur
-        Grammaire();
+        Grammaire(AnalyseurLexical * a);
 
-        std::vector<std::string> analyse_chaine(std::string chaine);
+        std::vector<std::pair<std::string,std::vector<std::string> > > analyse_chaine(std::string chaine);
         void import(std::string path, Importer * i);
         int get_terminal(std::string terme);
         int get_nonTerminal(std::string terme);

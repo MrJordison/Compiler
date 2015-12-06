@@ -5,11 +5,11 @@
 
 using namespace std;
 
-Grammaire::Grammaire(){
-    al = nullptr;
+Grammaire::Grammaire(AnalyseurLexical * a){
+    al = a;
 }
 
-vector<string> Grammaire::analyse_chaine(string chaine){
+vector<pair<string, vector<string> > > Grammaire::analyse_chaine(string chaine){
     //Analyse lexicale de la chaine
     vector<pair<string,string> > tabl = al->analyse_chaine(chaine);
     //Création de la pile pour l'automate
@@ -21,8 +21,12 @@ vector<string> Grammaire::analyse_chaine(string chaine){
 
     int tempcp(-1);
     Regle * rtmp;
-    vector<string> res;
+    vector<pair<string, vector<string> > > res;
+    string str;
     while(1){
+        str="";
+        for(string s : pile)
+            str+=s+" ";
         //Regarde si le terme en haut de pile est un terme terminal ou non 
         tempcp = get_terminal(pile[cpt]);
         //si ce n'est pas un terme terminal..
@@ -36,6 +40,7 @@ vector<string> Grammaire::analyse_chaine(string chaine){
                 //Remplacer le terme non terminal par cette dernière
                 pile.erase(pile.begin()+cpt);
                 pile.insert(pile.begin()+cpt,(*rtmp)[tempcp].begin(),(*rtmp)[tempcp].end());
+                res.push_back(pair<string,vector<string> >(rtmp->get_val(), vector<string>(((*rtmp)[tempcp]).begin(),((*rtmp)[tempcp]).end())));
             }
             else{
                 cout<< "Erreur, la règle ne permet pas de trouver le symbole terminal"<<endl;
@@ -44,9 +49,16 @@ vector<string> Grammaire::analyse_chaine(string chaine){
         }
         //Sinon si c'est un terme terminal..
         else{
+            //On passe au terme suivant si ce terme est le mot vide
+            if(pile[cpt]=="<vide>"){
+                pile.erase(pile.begin()+cpt);
+            }
             //Si il est égal au terme dans la chaine, on passe au terme suivant
-            if(pile[cpt]==tabl[cpt].first || pile[cpt]==tabl[cpt].second)
+            else if(pile[cpt]==tabl[cpt].first || pile[cpt]==tabl[cpt].second){
                 ++cpt;
+                if(cpt==pile.size())
+                    break;
+            }
             //Sinon erreur
             else{
                 cout<< "Erreur, le terme trouvé ne correspond pas à celui dans la chaine"<<endl;
@@ -104,8 +116,9 @@ void Grammaire::import(string path, Importer * i){
                             //on ajoute une ligne au tableau des transitions pour cette règle
                             transitions.insert(pair<Regle *, vector<int> *>(r, new vector<int>(terminaux.size(),-1)));
                             //si cette règle correspond à la variable temporaire  de l'axiome, on met à jour l'attribut axiome de la classe
-                            if(line_split[0]==axiome_value && axiome==nullptr)
+                            if(line_split[0]==axiome_value){
                                 axiome = r;
+                            }
                         }
                         it = line_split.begin();
                         //On créé un iterator qui commence à la deuxième valeur lue de la ligne...
@@ -117,16 +130,8 @@ void Grammaire::import(string path, Importer * i){
                             r->add_sousRegle(list<string>(it, line_split.end()));
                         }
                         //Si c'est la ligne de transitions du tableau...
-                        else if(line_split[1]=="<::=t>"){
-                            transitions[r][stoi(line_split[2])];
-                        }
-                        break;
-                    
-                    //4e partie du fichier : lecture du tableau de transitions de la grammaire
-                    case 4:
-                        //découpage de la ligne
-                        line_split = Importer::split(contenu,'#');
-
+                        else if(line_split[1]=="<::=t>")
+                            (*(transitions[r]))[stoi(line_split[2])]=stoi(line_split[3]);
                         break;
                 }
             }
