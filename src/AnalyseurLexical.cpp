@@ -101,6 +101,7 @@ void AnalyseurLexical::import_automates(string path, Importer * i){
 vector<pair<string, string> > AnalyseurLexical::analyse_chaine(string chaine){
     //mapping des mots / unités lexicales retourné par la fonction
     vector<pair<string,string> > tab;
+    cout << "\nAnalyse Lexicale\n"<<endl;
 
     //decoupage des mots de la chaine dans un tableau
     vector<string> chaine_split = Importer::split(chaine,' ');
@@ -122,10 +123,10 @@ vector<pair<string, string> > AnalyseurLexical::analyse_chaine(string chaine){
         if(res!="")
             tab.push_back(pair<string,string>(s,res));
         else{
-            cout<<"Erreur pour "<<s<<" : type non reconnu"<<endl;
-            break;
+            throw string("Erreur pour "+s+" : type non reconnu");
         }
     }
+    cout<< " Analyse lexicale : OK"<<endl;
     //retourne le resultat 
     return tab;
 }

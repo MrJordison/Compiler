@@ -32,16 +32,22 @@ void part2(){
     string chaine;
     getline(cin,chaine);
     string str;
-    for (pair<string, vector<string> > p : g.analyse_chaine(chaine)){
-        str=p.first+" ::= ";
-        for(string s : p.second)
-            str+= s;
-        cout << str << endl;
-    }   
+    try{
+        vector<pair <string, vector <string> > > res = g.analyse_chaine(chaine);
+
+        /*for (pair<string, vector<string> > p : g.analyse_chaine(chaine)){
+            str=p.first+" ::= ";
+            for(string s : p.second)
+                str+= s;
+            cout << str << endl;
+        }*/   
+    }
+    catch(string const& e){
+        cout<<e<<endl;
+    }
 }
 
 int main(){	
-
     part2();
 
     return 0;

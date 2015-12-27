@@ -11,7 +11,13 @@ Grammaire::Grammaire(AnalyseurLexical * a){
 
 vector<pair<string, vector<string> > > Grammaire::analyse_chaine(string chaine){
     //Analyse lexicale de la chaine
-    vector<pair<string,string> > tabl = al->analyse_chaine(chaine);
+    vector<pair<string,string> > tabl ;
+    try{
+        tabl = al->analyse_chaine(chaine);
+    }
+    catch(string const& e){
+        cout<<e<<endl;
+    }
     //Création de la pile pour l'automate
     vector<string> pile;
     //ajout de l'axiome comme départ de l'automate
@@ -19,6 +25,7 @@ vector<pair<string, vector<string> > > Grammaire::analyse_chaine(string chaine){
     //initialisation des curseur de chaine et de l'automate
     int cpt(0);
 
+    cout<< "\n Analyse Syntaxique\n"<<endl;
     int tempcp(-1);
     Regle * rtmp;
     vector<pair<string, vector<string> > > res;
@@ -41,10 +48,13 @@ vector<pair<string, vector<string> > > Grammaire::analyse_chaine(string chaine){
                 pile.erase(pile.begin()+cpt);
                 pile.insert(pile.begin()+cpt,(*rtmp)[tempcp].begin(),(*rtmp)[tempcp].end());
                 res.push_back(pair<string,vector<string> >(rtmp->get_val(), vector<string>(((*rtmp)[tempcp]).begin(),((*rtmp)[tempcp]).end())));
+                cout<<rtmp->get_val()<<" ::= ";
+                for(string temps : (*rtmp)[tempcp])
+                    cout<<temps;
+                cout<<"\n"<<endl;
             }
             else{
-                cout<< "Erreur, la règle ne permet pas de trouver le symbole terminal"<<endl;
-                break;
+                throw string("Erreur, la règle ne permet pas de trouver le symbole terminal");
             }
         }
         //Sinon si c'est un terme terminal..
@@ -61,11 +71,11 @@ vector<pair<string, vector<string> > > Grammaire::analyse_chaine(string chaine){
             }
             //Sinon erreur
             else{
-                cout<< "Erreur, le terme trouvé ne correspond pas à celui dans la chaine"<<endl;
-                break;
+                throw string("Erreur, le terme trouvé ne correspond pas à celui dans la chaine\n");
             }
         }
     }
+    cout << "Analyse syntaxique : OK"<<endl;
     return res;
 }
 
